@@ -1,16 +1,18 @@
-!/bin/bash
+#!/bin/bash
 
 API="${API_ORIGIN:-http://localhost:4741}"
-URL_PATH="/campaigns"
+URL_PATH="/encounters"
 curl "${API}${URL_PATH}" \
   --include \
   --request POST \
   --header "Content-Type: application/json" \
   --data '{
-    "campaign": {
+    "encounter": {
       "name": "'"${NAME}"'",
-      "scheduled_day": "'"${DAY}"'",
-      "user_id": "'"${USER}"'"
+      "CR": "'"${CR}"'",
+      "books": "'"${BOOKS}"'",
+      "description": "'"${DESCRIPTION}"'",
+      "campaign_id": "'"${CAMPAIGN}"'"
     }
   }'
 

@@ -1,4 +1,4 @@
-class CampaignsController < ApplicationController
+class CampaignsController < ProtectedController
   before_action :set_campaign, only: [:show, :update, :destroy]
 
   # GET /campaigns
