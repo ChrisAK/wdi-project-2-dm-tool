@@ -3,8 +3,7 @@ class CampaignsController < ProtectedController
 
   # GET /campaigns
   def index
-    @user = User.find(params[:id])
-    @campaigns = @user.campaigns
+    @campaigns = Campaign.all
 
     render json: @campaigns
   end
@@ -42,7 +41,10 @@ class CampaignsController < ProtectedController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_campaign
-      @campaign = Campaign.find(params[:id])
+      @user = User.find(params[:id])
+
+      @campaign = @user.campaigns
+    # @campaign = Campaign.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
