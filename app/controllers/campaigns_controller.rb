@@ -3,7 +3,7 @@ class CampaignsController < ProtectedController
 
   # GET /campaigns
   def index
-    @campaigns = Campaign.all
+    @campaigns = @user.Campaign.all
 
     render json: @campaigns
   end
