@@ -4,7 +4,7 @@ class CampaignsController < ProtectedController
   # GET /campaigns
   def index
     @user = User.find(params[:id])
-    @campaigns = @user.Campaign.all
+    @campaigns = @user.campaigns
 
     render json: @campaigns
   end
