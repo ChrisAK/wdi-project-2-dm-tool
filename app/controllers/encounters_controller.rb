@@ -3,7 +3,14 @@ class EncountersController < ProtectedController
 
   # GET /encounters
   def index
-    @encounters = Encounter.all
+    #@encounters = Encounter.find(params[:campaign_id])
+    binding.pry
+    @campaign_id = Campaign.find_by(:name => params[:campaign_id]).id
+    # @campaign_id = @campaign.id
+    binding.pry
+
+    @encounters = Encounter.where(:campaign_id => @campaign_id)
+    binding.pry
 
     render json: @encounters
   end
