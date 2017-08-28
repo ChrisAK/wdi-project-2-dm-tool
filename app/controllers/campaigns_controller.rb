@@ -1,5 +1,5 @@
 class CampaignsController < ProtectedController
-  before_action :set_campaign, only: [:show, :destroy]
+  before_action :set_campaign, only: [:show]
 
   # GET /campaigns
   def index
@@ -40,6 +40,10 @@ class CampaignsController < ProtectedController
 
   # DELETE /campaigns/1
   def destroy
+    @campaign_id = Campaign.find_by(:name => params[:id],
+                                 :user_id => params[:user_id]).id
+    @campaign = Campaign.find_by(:id => @campaign_id)
+
     @campaign.destroy
   end
 

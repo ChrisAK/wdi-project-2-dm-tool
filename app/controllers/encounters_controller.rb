@@ -1,5 +1,5 @@
 class EncountersController < ProtectedController
-  before_action :set_encounter, only: [:show, :destroy]
+  before_action :set_encounter, only: [:show]
 
   # GET /encounters
   def index
@@ -40,15 +40,12 @@ class EncountersController < ProtectedController
 
   # PATCH/PUT /encounters/1
   def update
-    binding.pry
     @campaign_id = Campaign.find_by(:name => params[:campaign_id],
                                     :user_id => params[:user_id]).id
-    binding.pry
     @encounter_id = Encounter.find_by(:name => params[:id],
                                       :campaign_id => @campaign_id).id
-    binding.pry
     @encounter = Encounter.where(:id => @encounter_id)
-    binding.pry
+
     if @encounter.update(encounter_params)
       render json: @encounter
     else
@@ -58,13 +55,18 @@ class EncountersController < ProtectedController
 
   # DELETE /encounters/1
   def destroy
+    @campaign_id = Campaign.find_by(:name => params[:campaign_id],
+                                    :user_id => params[:user_id]).id
+    @encounter_id = Encounter.find_by(:name => params[:id],
+                                      :campaign_id => @campaign_id).id
+    @encounter = Encounter.find_by(:id => @encounter_id)
+
     @encounter.destroy
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_encounter
-      binding.pry
       @encounter = Encounter.find(params[:id])
     end
 
