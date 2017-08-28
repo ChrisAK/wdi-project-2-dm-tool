@@ -1,5 +1,5 @@
 class EncountersController < ProtectedController
-  before_action :set_encounter, only: [:show, :update, :destroy]
+  before_action :set_encounter, only: [:show, :destroy]
 
   # GET /encounters
   def index
@@ -40,6 +40,15 @@ class EncountersController < ProtectedController
 
   # PATCH/PUT /encounters/1
   def update
+    binding.pry
+    @campaign_id = Campaign.find_by(:name => params[:campaign_id],
+                                    :user_id => params[:user_id]).id
+    binding.pry
+    @encounter_id = Encounter.find_by(:name => params[:id],
+                                      :campaign_id => @campaign_id).id
+    binding.pry
+    @encounter = Encounter.where(:id => @encounter_id)
+    binding.pry
     if @encounter.update(encounter_params)
       render json: @encounter
     else
@@ -55,11 +64,12 @@ class EncountersController < ProtectedController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_encounter
+      binding.pry
       @encounter = Encounter.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def encounter_params
-      params.require(:encounter).permit(:name, :CR, :books, :description, :campaign_id)
+      params.require(:encounter).permit(:name, :CR, :books, :description, :campaign_id).reject { |k, v| v.blank? }
     end
 end

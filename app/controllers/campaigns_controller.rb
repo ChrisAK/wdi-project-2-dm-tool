@@ -1,5 +1,5 @@
 class CampaignsController < ProtectedController
-  before_action :set_campaign, only: [:show, :update, :destroy]
+  before_action :set_campaign, only: [:show, :destroy]
 
   # GET /campaigns
   def index
@@ -26,6 +26,11 @@ class CampaignsController < ProtectedController
 
   # PATCH/PUT /campaigns/1
   def update
+    @campaign_id = Campaign.find_by(:name => params[:id],
+                                 :user_id => params[:user_id]).id
+
+    @campaign = Campaign.where(:id => @campaign_id)
+
     if @campaign.update(campaign_params)
       render json: @campaign
     else
@@ -46,6 +51,6 @@ class CampaignsController < ProtectedController
 
     # Only allow a trusted parameter "white list" through.
     def campaign_params
-      params.require(:campaign).permit(:name, :scheduled_day, :user_id)
+      params.require(:campaign).permit(:name, :scheduled_day, :user_id).reject { |k, v| v.blank? }
     end
 end
