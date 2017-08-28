@@ -4,13 +4,10 @@ class EncountersController < ProtectedController
   # GET /encounters
   def index
     #@encounters = Encounter.find(params[:campaign_id])
-    binding.pry
-    @campaign_id = Campaign.find_by(:name => params[:campaign_id]).id
+    @campaign_id = Campaign.find_by(:name => params[:campaign_id], :user_id => params[:user_id]).id
     # @campaign_id = @campaign.id
-    binding.pry
 
     @encounters = Encounter.where(:campaign_id => @campaign_id)
-    binding.pry
 
     render json: @encounters
   end
@@ -22,7 +19,17 @@ class EncountersController < ProtectedController
 
   # POST /encounters
   def create
-    @encounter = Encounter.new(encounter_params)
+
+    @campaign_id = Campaign.find_by(:name => params[:campaign_id], :user_id => params[:user_id]).id
+
+    @name = encounter_params[:name]
+
+    @CR = encounter_params[:CR]
+    @books = encounter_params[:books]
+    @description = encounter_params[:description]
+
+    @encounter = Encounter.new(:name => @name, :CR => @CR, :books => @books,
+                               :description => @description, :campaign_id => @campaign_id)
 
     if @encounter.save
       render json: @encounter, status: :created, location: @encounter
